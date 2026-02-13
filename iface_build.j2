@@ -1,0 +1,48 @@
+{# Script #2: Physical Interface Build Script For FMG. Save as CLI Jinja Template and import Script #1 #}
+{%- import 'doosan_vlan_import' as vlans with context -%}
+{%- for x in vlans.vlans -%}
+{% if x.name is defined -%}
+{% if x.subnet | ipaddr('host') -%}
+{# Check if variable is host #}
+config system interface
+    edit {{x.port}}
+        set vdom "root"
+        set ip {{x.subnet|ipaddr('address')}} {{x.subnet|ipaddr('netmask')}}
+        set allowaccess ping
+    next
+end
+{% elif x.subnet | ipaddr('network') -%}
+{# Check if variable is network #}
+config system interface
+    edit {{x.port}}
+        set vdom "root"
+        set ip {{x.subnet|ipaddr(1)|ipaddr('address')}} {{x.subnet|ipaddr('netmask')}}
+        set allowaccess ping
+    next
+end
+{% endif -%}
+{% if x.dhcp == 'y' -%}
+config system dhcp server
+    edit {{x.netid}}
+        set interface {{x.port}}
+        set dns-service default
+        set default-gateway {{x.subnet| ipaddr('subnet') | ipaddr(1) | ipaddr('address') }}
+        set netmask {{x.subnet| ipaddr('netmask')}}
+        {% if x.subnet| ipaddr('size_usable') >= 62 -%}
+          config ip-range
+            edit 1
+              set start-ip {{x.subnet| ipaddr('subnet') | ipaddr(+20) | ipaddr('address') }}
+              set end-ip {{ x.subnet | ipaddr('subnet') | ipaddr(-2) | ipaddr('address') }}
+        {% elif x.subnet| ipaddr('size_usable') <= 62 -%}
+          config ip-range
+            edit 1
+              set start-ip {{x.subnet| ipaddr('subnet') | ipaddr(+3) | ipaddr('address') }}
+              set end-ip {{ x.subnet | ipaddr('subnet') | ipaddr(-2) | ipaddr('address') }}
+        {% endif %}
+              next
+        end
+   next
+end
+{% endif -%}
+{% endif -%}
+{% endfor -%}
