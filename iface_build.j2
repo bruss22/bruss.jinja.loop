@@ -1,5 +1,5 @@
 {# Script #2: Physical Interface Build Script For FMG. Save as CLI Jinja Template and import Script #1 #}
-{%- import 'doosan_vlan_import' as vlans with context -%}
+{%- import 'script1-name***changeme' as vlans with context -%}
 {%- for x in vlans.vlans -%}
 {% if x.name is defined -%}
 {% if x.subnet | ipaddr('host') -%}
