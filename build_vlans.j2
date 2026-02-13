@@ -1,5 +1,4 @@
 {# Script #2: VLAN Build Script For FMG. Save as CLI Jinja Template and import Script #1 #}
-
 {% if x.name is defined -%}
 {% if x.subnet | ipaddr('host') -%}
 {# Check if variable is host #}
