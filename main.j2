@@ -6,7 +6,7 @@
 {# 'netid':network1_netid will be used for VLANID / DHCP Server Index or both #}
 {%- set nets = 
   [
-        {'name':network1_name, 'port':network1_port, 'netid':network1_netid, 'subnet':network1_subnet, 'dhcp':network1_dhcp},
-        {'name':network2_name, 'port':network2_port, 'netid':network2_netid, 'subnet':network2_subnet, 'dhcp':network2_dhcp},
+        {'name':network1_name, 'port':network1_port, 'netid':network1_netid, 'subnet':network1_subnet, 'dhcp':network1_dhcp, 'vrf':network1_vrf},
+        {'name':network2_name, 'port':network2_port, 'netid':network2_netid, 'subnet':network2_subnet, 'dhcp':network2_dhcp, 'vrf':network2_vrf},
   ]
 -%}
