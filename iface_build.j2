@@ -1,23 +1,27 @@
 {# Script #2: Physical Interface Build Script For FMG. Save as CLI Jinja Template and import Script #1 #}
-{%- import 'main' as main with context -%}
-{%- for x in main.nets -%}
+{% import 'main' as nets with context -%}
+{% for x in nets.nets -%}
 {% if x.name is defined -%}
+{# Check if variable is host -#}
 {% if x.subnet | ipaddr('host') -%}
-{# Check if variable is host #}
 config system interface
     edit {{x.port}}
         set vdom "root"
         set ip {{x.subnet|ipaddr('address')}} {{x.subnet|ipaddr('netmask')}}
         set allowaccess ping
+		set vrf {{x.vrf}}
+        set description {{x.subnet}} is host in {{x.subnet|ipaddr('network/prefix')}}
     next
 end
+{# Check if variable is network -#}
 {% elif x.subnet | ipaddr('network') -%}
-{# Check if variable is network #}
 config system interface
     edit {{x.port}}
         set vdom "root"
         set ip {{x.subnet|ipaddr(1)|ipaddr('address')}} {{x.subnet|ipaddr('netmask')}}
         set allowaccess ping
+		set vrf {{x.vrf}}
+        set description {{x.subnet}} is network {{x.subnet|ipaddr('network/prefix')}}
     next
 end
 {% endif -%}
@@ -38,7 +42,7 @@ config system dhcp server
             edit 1
               set start-ip {{x.subnet| ipaddr('subnet') | ipaddr(+3) | ipaddr('address') }}
               set end-ip {{ x.subnet | ipaddr('subnet') | ipaddr(-2) | ipaddr('address') }}
-        {% endif %}
+        {% endif -%}
               next
         end
    next
