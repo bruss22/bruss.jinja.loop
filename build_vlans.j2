@@ -11,6 +11,9 @@ config system interface
         set allowaccess ping
         set interface {{x.port}}
         set vlanid {{x.netid}}
+        {% if x.vrf is defined -%}
+        set vrf {{x.vrf}}
+        {% endif -%}
     next
 end
 {% elif x.subnet | ipaddr('network') -%}
@@ -22,6 +25,9 @@ config system interface
         set allowaccess ping
         set interface {{x.port}}
         set vlanid {{x.netid}}
+        {% if x.vrf is defined -%}
+        set vrf {{x.vrf}}
+        {% endif -%}
     next
 end
 {% endif -%}
