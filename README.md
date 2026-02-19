@@ -17,3 +17,6 @@ required metavars "*_metavar" below for as is operation:
   ]
 -%}
 ```
+
+#### todo:
+combine build script for vlan and physical insterfaces.
