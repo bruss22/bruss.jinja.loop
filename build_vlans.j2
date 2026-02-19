@@ -36,7 +36,11 @@ config system dhcp server
     edit {{x.netid}}
         set interface {{x.name}}
         set dns-service default
+        {% if x.subnet | ipaddr('host') -%}
+        set default-gateway {{x.subnet|ipaddr('address')}}
+        {% elif x.subnet | ipaddr('network') -%}
         set default-gateway {{x.subnet| ipaddr('subnet') | ipaddr(1) | ipaddr('address') }}
+        {% endif -%}
         set netmask {{x.subnet| ipaddr('netmask')}}
         {% if x.subnet| ipaddr('size_usable') >= 62 -%}
           config ip-range
@@ -48,9 +52,11 @@ config system dhcp server
             edit 1
               set start-ip {{x.subnet| ipaddr('subnet') | ipaddr(+3) | ipaddr('address') }}
               set end-ip {{ x.subnet | ipaddr('subnet') | ipaddr(-2) | ipaddr('address') }}
-        {% endif %}
-              next
-        end
+        {% endif -%}
+          next
+      end
+   next
+end
    next
 end
 {% endif -%}
