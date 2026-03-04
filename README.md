@@ -1,5 +1,5 @@
 # jinja.loop
-Jinja Template to build interfaces in Fortimanager<br>
+Jinja Template to build interfaces on Spokes/Branches in Fortimanager<br>
 Build scripts will Iterate over list of dictionaries from main.j2 containing FMG MetaVars.<br> 
 <br>
 Required metavars "*_metavar" below for as is operation:<br>
