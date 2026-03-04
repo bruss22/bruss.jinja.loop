@@ -4,6 +4,13 @@
 {# format key:metavar #}
 {#'subnet':network1_subnet define in cidr notation xxx.xxx.xxx.xxx/xx. script checks for host and network#}
 {# 'netid':network1_netid will be used for VLANID / DHCP Server Index or both #}
+{#Script1 Import file 00-import for build scripts. Build script will loop through list of dictionaries calling keys to render configs. #}
+{%- set _do = "" -%}
+{%- set vars = {} -%}
+{# Glabal Vars, If vlan based networks set network type to "network_type":"vlan" #}
+{%- set _do = vars.update({
+  "network_type":"vlan",
+})-%} 
 {%- set nets = 
   [
         {'name':network1_name, 'port':network1_port, 'netid':network1_netid, 'subnet':network1_subnet, 'dhcp':network1_dhcp, 'vrf':network1_vrf},
