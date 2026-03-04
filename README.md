@@ -20,4 +20,4 @@ example main:
 -%}
 ```
 #### todo:
-combine build script for vlan and physical insterfaces.
+Finish combined build script for vlan and physical interfaces.
