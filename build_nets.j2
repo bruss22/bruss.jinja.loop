@@ -14,19 +14,20 @@ config system interface
         set interface {{x.port}}
         set vlanid {{x.netid}}
         set description {{x.name|upper}}-Network
-    {%- elif network_type != 'vlan' %}
+    {%- else %}
     edit {{x.port}}
     {%- endif %}
         set vdom "root"
         set mode static
         set allowaccess ping
+        set description {{x.name|upper}}-Network
         {%- if x.vrf is defined %}
         set vrf {{x.vrf}}
         {%- endif %}
         {# Check if subnet variable is host or network #}
         {%- if x.subnet | ipaddr('host') -%}
         set ip {{x.subnet|ipaddr('address')}} {{x.subnet|ipaddr('netmask')}}
-        {%- elif x.subnet | ipaddr('network') -%}
+        {%- else -%}
         set ip {{x.subnet|ipaddr(1)|ipaddr('address')}} {{x.subnet|ipaddr('netmask')}}
         {%- endif %}
     next
@@ -37,13 +38,13 @@ config system dhcp server
     edit {{x.netid}}
         {%- if network_type == 'vlan' %}    
         set interface {{prefix}}{{x.netid}}
-        {%- elif network_type != 'vlan' %}
+        {%- else %}
         set interface {{x.port}}
         {%- endif %}
         set dns-service default
         {%- if x.subnet | ipaddr('host') %}
         set default-gateway {{x.subnet|ipaddr('address')}}
-        {%- elif x.subnet | ipaddr('network') %}
+        {%- else %}
         set default-gateway {{x.subnet| ipaddr('subnet') | ipaddr(1) | ipaddr('address') }}
         {%- endif %}
         set netmask {{x.subnet| ipaddr('netmask')}}
