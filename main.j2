@@ -8,7 +8,8 @@
 {%- set vars = {} -%}
 {# Glabal Vars, If vlan based networks set network type to "network_type":"vlan" Only required for build_nets script#}
 {%- set _do = vars.update({
-  "network_type":"",
+  "network_type":"vlan",
+  "vlan_prefix":"VLAN"
 })-%} 
 {%- set nets = 
   [
