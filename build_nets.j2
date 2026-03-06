@@ -16,11 +16,11 @@ config system interface
         set description {{x.name|upper}}-Network
     {%- else %}
     edit {{x.port}}
+        set description {{x.name|upper}}-Network
     {%- endif %}
         set vdom "root"
         set mode static
-        set allowaccess ping
-        set description {{x.name|upper}}-Network
+        set allowaccess ping      
         {%- if x.vrf is defined %}
         set vrf {{x.vrf}}
         {%- endif %}
