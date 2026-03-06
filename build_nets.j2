@@ -13,14 +13,13 @@ config system interface
     edit {{prefix}}{{x.netid}}
         set interface {{x.port}}
         set vlanid {{x.netid}}
-        set description {{x.name|upper}}-Network
     {%- else %}
     edit {{x.port}}
-        set description {{x.name|upper}}-Network
     {%- endif %}
         set vdom "root"
         set mode static
-        set allowaccess ping      
+        set allowaccess ping
+        set description {{x.name|upper}}-Network        
         {%- if x.vrf is defined %}
         set vrf {{x.vrf}}
         {%- endif %}
