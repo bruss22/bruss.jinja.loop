@@ -32,7 +32,7 @@ config system interface
     next
 end
 {% endif %}
-{%- if x.dhcp == 'y' -%}
+{%- if x.dhcp | default('n') == 'y' -%}
 config system dhcp server
     edit {{x.netid}}
         {%- if network_type == 'vlan' %}    
