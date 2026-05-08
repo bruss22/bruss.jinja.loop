@@ -1,6 +1,7 @@
 {#- Script #2:Build VLAN or Physical Interfaces based on value of network_type:"" in main.j2 var object -#} 
 {#- Save as CLI Jinja Template and import Script #1 -#}
 {%- import '00-import' as main with context -%}
+{#- Override list used to override global network_type per network inside loop-#}
 {%- set override = [''] -%}
 {%- set network_type = 'port' -%}
 {%- set prefix = main.vars['vlan_prefix']|upper -%}
@@ -9,6 +10,7 @@
 {%- endif -%}
 {%- for x in main.nets -%}
 {%- if x.name is defined -%}
+{#- Check override list -#}
 {%- if x.name in override -%}
 {%- set network_type = 'port' -%}
 {%- endif -%}
